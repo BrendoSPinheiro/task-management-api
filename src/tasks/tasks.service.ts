@@ -18,6 +18,12 @@ export class TasksService {
     return this.tasks;
   }
 
+  getTaskById(id: string): Task {
+    const task = this.tasks.find((task) => task.id === id);
+
+    return task;
+  }
+
   createTask({ title, description }: CreateTaskDto): Task {
     const newTask: Task = {
       id: uuid(),
@@ -29,5 +35,19 @@ export class TasksService {
     this.tasks.push(newTask);
 
     return newTask;
+  }
+
+  updateTaskStatus(id: string, status: TaskStatus): Task {
+    this.tasks = this.tasks.map((task) => (
+      task.id === id ? { ...task, status } : task
+    ));
+
+    const updatedTask = this.tasks.find((task) => task.id === id);
+
+    return updatedTask;
+  }
+
+  deleteTask(id: string): void {
+    this.tasks = this.tasks.filter((task) => task.id !== id);
   }
 }
